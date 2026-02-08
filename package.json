@@ -1,0 +1,21 @@
+{
+  "name": "asistente-virtual-2026",
+  "version": "1.0.0",
+  "description": "Bot telegram",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "nodemailer": "^8.0.1",
+    "random-string-generator": "^1.0.7",
+    "uuid": "^9.0.1"
+  },
+  "author": "Jossy Xavier Melgar",
+  "license": "ISC"
+}
