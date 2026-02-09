@@ -410,7 +410,7 @@ async function handleIncoming({ bot, userId, chatId, text, voice }) {
             ctx.nombre_empresa,
             1,
             fecha,
-            "Telegram"
+            "Telegram",p.grado,p.idgrados,p.categoria,p.idcategoria
           );
 
           if (!inserta_solicitud.ok) {
@@ -574,7 +574,7 @@ async function handleIncoming({ bot, userId, chatId, text, voice }) {
             ctx.nombre_embajada,
             3,
             fecha,
-            "Telegram"
+            "Telegram",p.grado,p.idgrados,p.categoria,p.idcategoria
           );
 
           if (!inserta_solicitud.ok) {
@@ -638,9 +638,10 @@ async function handleIncoming({ bot, userId, chatId, text, voice }) {
             ctx.nombre_empresa,
             4,
             fecha,
-            "Telegram"
+            "Telegram",p.grado,p.idgrados,p.categoria,p.idcategoria
           );
 
+         
           if (!inserta_solicitud.ok) {
             return { mensaje: "❌ Error al solicitar constancia sin deducción. Intenta más tarde." };
           }
@@ -1193,15 +1194,16 @@ async function guardarConstanciaConDeduccion(
   empresa,
   idtipo_solicitud,
   fecha_inicio,
-  por_donde_solicito
+  por_donde_solicito,
+  grado,idgrado,categoria,idcategoria
 ) {
   let sql = `INSERT INTO planilla.whatsapp_solicitudes
    (identidad, nombres, numero, empresa_constancia, idestado_whatssap,
     fecha_sistema, idtipo_solicitud, fecha_inicio,
-     por_donde_solicito) VALUES 
+     por_donde_solicito,grado,idgrado,categoria,idcategoria) VALUES 
      ('${identidad}', '${nombre}', '${numero}', '${empresa}', 1,now(),
       '${idtipo_solicitud}', '${fecha_inicio}',
-      '${por_donde_solicito}');
+      '${por_donde_solicito}','${grado}''${idgrado}''${categoria}''${idcategoria}');
 `;
   let espera = await new Promise((resolve) => {
     db.query(sql, (error) => {
@@ -1247,15 +1249,16 @@ async function guardarConstanciaSinDeduccion(
   empresa,
   idtipo_solicitud,
   fecha_inicio,
-  por_donde_solicito
+  por_donde_solicito,
+  grado,idgrado,categoria,idcategoria
 ) {
   let sql = `INSERT INTO planilla.whatsapp_solicitudes
    (identidad, nombres, numero, empresa_constancia, idestado_whatssap,
     fecha_sistema, idtipo_solicitud, fecha_inicio,
-     por_donde_solicito) VALUES 
+     por_donde_solicito,grado,idgrado,categoria,idcategoria) VALUES 
      ('${identidad}', '${nombre}', '${numero}', '${empresa}', 1,now(),
       '${idtipo_solicitud}', '${fecha_inicio}',
-      '${por_donde_solicito}');
+      '${por_donde_solicito}','${grado}''${idgrado}''${categoria}''${idcategoria}');
 `;
   let espera = await new Promise((resolve) => {
     db.query(sql, (error) => {
