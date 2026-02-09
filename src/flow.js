@@ -413,6 +413,8 @@ async function handleIncoming({ bot, userId, chatId, text, voice }) {
             "Telegram",p.grado,p.idgrados,p.categoria,p.idcategoria
           );
 
+
+
           if (!inserta_solicitud.ok) {
             return { mensaje: "❌ No se pudo registrar la solicitud. Intenta más tarde." };
           }
@@ -1203,8 +1205,9 @@ async function guardarConstanciaConDeduccion(
      por_donde_solicito,grado,idgrado,categoria,idcategoria) VALUES 
      ('${identidad}', '${nombre}', '${numero}', '${empresa}', 1,now(),
       '${idtipo_solicitud}', '${fecha_inicio}',
-      '${por_donde_solicito}','${grado}''${idgrado}''${categoria}''${idcategoria}');
+      '${por_donde_solicito}','${grado}','${idgrado}','${categoria}','${idcategoria}');
 `;
+console.log(sql)
   let espera = await new Promise((resolve) => {
     db.query(sql, (error) => {
       if (error) return resolve({ mensaje: "Error en la db", ok: false });
@@ -1258,7 +1261,7 @@ async function guardarConstanciaSinDeduccion(
      por_donde_solicito,grado,idgrado,categoria,idcategoria) VALUES 
      ('${identidad}', '${nombre}', '${numero}', '${empresa}', 1,now(),
       '${idtipo_solicitud}', '${fecha_inicio}',
-      '${por_donde_solicito}','${grado}''${idgrado}''${categoria}''${idcategoria}');
+      '${por_donde_solicito}','${grado}','${idgrado}','${categoria}','${idcategoria}');
 `;
   let espera = await new Promise((resolve) => {
     db.query(sql, (error) => {
