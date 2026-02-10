@@ -9,7 +9,8 @@ tiposConstancia =[
   {nombre:"Vaucher",code:2},
   {nombre:"Embajada",code:3},
   {nombre:"Sin deduccion",code:4},
-  {nombre:"Historica",code:5},  
+  {nombre:"Historica",code:5},
+  {nombre:"Tribunal",code:6},  
   {nombre:"Cuando me toca pago de vacaciones",code:88}
 
 ]
