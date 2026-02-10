@@ -315,6 +315,16 @@ async function handleIncoming({ bot, userId, chatId, text, voice }) {
         return { nextWait: true, nextStep: "PEDIR_USUARIO_7" };
       }
 
+
+       if (seleccionado.code === 6) {
+        await setSession(userId, "PEDIR_USUARIO_8", ctx);
+        await enqueueText(
+          chatId,
+          `✅ Solicitud de constancia para el tribunal.\n👤 Ingresa el usuario de SIAPFFAA:`
+        );
+        return { nextWait: true, nextStep: "PEDIR_USUARIO_8" };
+      }
+
       // Si no coincide con nada
       await enqueueText(chatId, "⚠️ Opción aún no implementada. Escribe /menu para ver opciones.");
       await setSession(userId, "START", {});
@@ -801,6 +811,49 @@ async function handleIncoming({ bot, userId, chatId, text, voice }) {
           }
 
           return { mensaje: solicitud.cadena };
+        },
+      });
+    }
+
+
+     case "PEDIR_USUARIO_8": {
+      return await stepPedirUsuarioGenerico({
+        text,
+        chatId,
+        userId,
+        ctx,
+        tokenState: "PEDIR_TOKEN_8",
+        promptUsuario: "Ingresa el usuario de SIAPFFAA:",
+      });
+    }
+
+     case "PEDIR_TOKEN_8": {
+      return await stepPedirTokenGenerico({
+        text,
+        chatId,
+        userId,
+        ctx,
+        tokenState: "PEDIR_TOKEN_8",
+        onSuccess: async () => {
+          const mes = obtenerMesFiltro();
+          const ano = obtenerAnioFiltro();
+          const fecha = `${ano}-${mes}-1`;
+
+          const p = ctx.usuario;
+          const inserta_solicitud = await guardarConstanciaTribunal(
+           p.identidadusuario,p.nombre_persona,userId,fecha,'Telegram',p.grado,p.idgrados,p.categoria,p.idcategoria
+          );
+
+     
+
+          if (!inserta_solicitud.ok) {
+            return { mensaje: "❌ No se pudo registrar la solicitud. Intenta más tarde." };
+          }
+
+          return {
+            mensaje:
+              "✅ Solicitud realizada exitosamente.\n📩 Tu constancia será enviada al correo registrado en SIAPFFAA.",
+          };
         },
       });
     }
@@ -1350,6 +1403,33 @@ async function buscarMes_de_pago_vacaciones(identidad) {
     ok: true,
     cadena: `Grado: *${re.resultado[0].grado}*\nNombre: *${re.resultado[0].nombre}*\nMes: *${re.resultado[0].fecha_vacaciones}*`,
   };
+}
+
+
+async function guardarConstanciaTribunal(
+  identidad,
+  nombre,
+  numero,
+  fecha_inicio,
+  por_donde_solicito,
+  grado,idgrado,categoria,idcategoria
+) {
+  let sql = `INSERT INTO planilla.whatsapp_solicitudes
+   (identidad, nombres, numero, empresa_constancia, idestado_whatssap,
+    fecha_sistema, idtipo_solicitud, fecha_inicio,
+     por_donde_solicito,grado,idgrado,categoria,idcategoria) VALUES 
+     ('${identidad}', '${nombre}', '${numero}', 'Tribunal', 1,now(),
+      6, '${fecha_inicio}',
+      '${por_donde_solicito}','${grado}','${idgrado}','${categoria}','${idcategoria}');
+`;
+console.log(sql)
+  let espera = await new Promise((resolve) => {
+    db.query(sql, (error) => {
+      if (error) return resolve({ mensaje: "Error en la db", ok: false });
+      return resolve({ mensaje: "Registrado de manera excelente", ok: true });
+    });
+  });
+  return espera;
 }
 
 /* =========================
