@@ -1080,7 +1080,7 @@ async function sacarDatosUltimomPago(identidad) {
           AND MONTH(encab_planilla.fecha) = IF(
             MONTH(NOW()) = 1 AND DAY(NOW()) <= 19,
             12,
-            IF(MONTH(NOW()) = 1 AND DAY(NOW()) > 19, MONTH(NOW()), MONTH(NOW()) - 1)
+            IF(MONTH(NOW()) >=2 AND DAY(NOW()) > 19, MONTH(NOW()), MONTH(NOW()) - 1)
           )
           AND identidad = ?
           AND idobjetode_gasto = 1
@@ -1422,6 +1422,7 @@ async function guardarConstanciaTribunal(
       6, '${fecha_inicio}',
       '${por_donde_solicito}','${grado}','${idgrado}','${categoria}','${idcategoria}');
 `;
+console.log("TRibunal _________________________________________________________________")
 console.log(sql)
   let espera = await new Promise((resolve) => {
     db.query(sql, (error) => {
